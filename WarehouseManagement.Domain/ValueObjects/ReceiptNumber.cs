@@ -5,23 +5,22 @@ using System.Text;
 using System.Threading.Tasks;
 
 using WarehouseManagement.Domain.Common;
-using WarehouseManagement.Domain.Entities;
 using WarehouseManagement.Domain.Exceptions.UnSupportedExceptions;
 
 namespace WarehouseManagement.Domain.ValueObjects
 {
-    public class UnitOfMeasureName : ValueObject
+    public class ReceiptNumber : ValueObject
     {
         public string Value { get; }
 
-        private UnitOfMeasureName(string name) => Value = name;
+        private ReceiptNumber(string number) => Value = number;
 
-        public static UnitOfMeasureName Create(string unitOfMeasureName)
+        public static ReceiptNumber Create(string receiptNumber)
         {
-            if (string.IsNullOrEmpty(unitOfMeasureName) || unitOfMeasureName.Length != 3)
-                throw new UnSupportedUnitOfMeasureNameException(unitOfMeasureName);
+            if (string.IsNullOrEmpty(receiptNumber))
+                throw new UnSupportedReceiptNumberException(receiptNumber);
 
-            return new UnitOfMeasureName(unitOfMeasureName);
+            return new ReceiptNumber(receiptNumber);
         }
 
         protected override IEnumerable<object> GetAtomicValues()

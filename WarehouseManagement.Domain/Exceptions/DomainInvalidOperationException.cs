@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace WarehouseManagement.Domain.Exceptions
 {
-    public class UnSupportedResourceNameException : Exception
+    public class DomainInvalidOperationException : Exception
     {
-        public UnSupportedResourceNameException(string resourceName) : base(resourceName) { }
+        public DomainInvalidOperationException(string message) : base(message) { }
     }
 }

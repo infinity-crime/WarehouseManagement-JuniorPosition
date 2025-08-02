@@ -17,10 +17,14 @@ namespace WarehouseManagement.Domain.Entities
 
         private Resource() { }
 
-        public Resource(string name)
+        public static Resource Create(string name)
         {
-            Name = ResourceName.Create(name);
-            ResourceState = Status.InWork;
+            return new Resource
+            {
+                Id = Guid.NewGuid(),
+                Name = ResourceName.Create(name),
+                ResourceState = Status.InWork
+            };
         }
 
         public void ChangeResourceState(Status status) => ResourceState = status;

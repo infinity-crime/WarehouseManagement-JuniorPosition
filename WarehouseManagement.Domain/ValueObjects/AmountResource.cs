@@ -3,23 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using WarehouseManagement.Domain.Common;
 using WarehouseManagement.Domain.Exceptions.UnSupportedExceptions;
 
 namespace WarehouseManagement.Domain.ValueObjects
 {
-    public sealed class ResourceName : ValueObject
+    public class AmountResource : ValueObject
     {
-        public string Value { get; }
+        public decimal Value { get; }
 
-        private ResourceName(string name) => Value = name;
+        private AmountResource(decimal amount) => Value = amount;
 
-        public static ResourceName Create(string resourceName)
+        public static AmountResource Create(decimal amountResource)
         {
-            if (string.IsNullOrEmpty(resourceName))
-                throw new UnSupportedResourceNameException(resourceName);
+            if(amountResource <= 0)
+                throw new UnSupportedAmountResourceException(amountResource.ToString());
 
-            return new ResourceName(resourceName);
+            return new AmountResource(amountResource);
         }
 
         protected override IEnumerable<object> GetAtomicValues()

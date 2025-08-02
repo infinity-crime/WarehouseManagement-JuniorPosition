@@ -17,10 +17,14 @@ namespace WarehouseManagement.Domain.Entities
 
         private UnitOfMeasure() { }
 
-        public UnitOfMeasure(string currency)
+        public static UnitOfMeasure Create(string currency)
         {
-            Currency = UnitOfMeasureName.Create(currency);
-            UnitOfMeasureState = Status.InWork;
+            return new UnitOfMeasure
+            {
+                Id = Guid.NewGuid(),
+                Currency = UnitOfMeasureName.Create(currency),
+                UnitOfMeasureState = Status.InWork
+            };
         }
 
         public void ChangeUnitOfMeasureState(Status status) => UnitOfMeasureState = status;

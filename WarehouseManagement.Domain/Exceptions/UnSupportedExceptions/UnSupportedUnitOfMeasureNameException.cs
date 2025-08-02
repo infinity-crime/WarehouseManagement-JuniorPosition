@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WarehouseManagement.Domain.Exceptions
+namespace WarehouseManagement.Domain.Exceptions.UnSupportedExceptions
 {
     public class UnSupportedUnitOfMeasureNameException : Exception
     {
