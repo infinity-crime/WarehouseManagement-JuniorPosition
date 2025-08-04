@@ -30,5 +30,6 @@ namespace WarehouseManagement.Domain.Entities
         }
 
         public void ChangeUnitOfMeasureState(Status status) => UnitOfMeasureState = status;
+        public void ChangeUnitOfMeasureName(string currency) => Currency = UnitOfMeasureName.Create(currency);
     }
 }

@@ -30,7 +30,7 @@ namespace WarehouseManagement.Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<ResourceDto>> AddResourceAsync(string name)
+        public async Task<Result<ResourceDto>> CreateAsync(string name)
         {
             if (await _repository.ExistsByNameAsync(name))
                 return Result<ResourceDto>.Failure("Запись с таким ресурсом уже существует!");
@@ -45,11 +45,11 @@ namespace WarehouseManagement.Application.Services
             }
             catch(UnSupportedResourceNameException ex)
             {
-                return Result<ResourceDto>.Failure($"Неккоректное имя ресурса: {ex.Message}");
+                return Result<ResourceDto>.Failure($"Некорректное имя ресурса: {ex.Message}");
             }
         }
 
-        public async Task<Result> DeleteResourceAsync(Guid resourceId)
+        public async Task<Result> DeleteAsync(Guid resourceId)
         {
             var resource = await _repository.GetByIdAsync(resourceId);
             if (resource is null)
@@ -58,7 +58,7 @@ namespace WarehouseManagement.Application.Services
             await _repository.DeleteAsync(resourceId);
             await _unitOfWork.CommitAsync();
 
-            return Result<ResourceDto>.Success();
+            return Result.Success();
         }
 
         public async Task<Result<ResourceDto>> MoveToArchive(Guid resourceId)
@@ -77,7 +77,7 @@ namespace WarehouseManagement.Application.Services
             return Result<ResourceDto>.Success(_mapper.Map<ResourceDto>(resource));
         }
 
-        public async Task<Result<ResourceDto>> UpdateResourceAsync(Guid resourceId, string name)
+        public async Task<Result<ResourceDto>> ChangeNameAsync(Guid resourceId, string name)
         {
             var resource = await _repository.GetByIdAsync(resourceId);
             if (resource is null)
@@ -85,9 +85,7 @@ namespace WarehouseManagement.Application.Services
 
             try
             {
-                var resourceName = ResourceName.Create(name);
-
-                resource.ChangeResourceName(resourceName);
+                resource.ChangeResourceName(name);
 
                 await _repository.UpdateAsync(resource);
                 await _unitOfWork.CommitAsync();
@@ -96,7 +94,7 @@ namespace WarehouseManagement.Application.Services
             }
             catch (UnSupportedResourceNameException ex)
             {
-                return Result<ResourceDto>.Failure($"Неккоректное имя ресурса: {ex.Message}");
+                return Result<ResourceDto>.Failure($"Некорректное имя ресурса: {ex.Message}");
             }
         }
     }

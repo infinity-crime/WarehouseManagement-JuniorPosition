@@ -10,7 +10,7 @@ namespace WarehouseManagement.Application
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddAutoMapperFromApplication(this IServiceCollection services)
+        public static IServiceCollection AddApplicationLayer(this IServiceCollection services)
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             return services;

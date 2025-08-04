@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace WarehouseManagement.Application.Common.Interfaces
+{
+    public interface IDirectoryService<T> where T : class
+    {
+        Task<T> CreateAsync(string name);
+        Task<T> ChangeNameAsync(Guid id, string name);
+        Task<T> MoveToArchive(Guid id);
+        Task<Result> DeleteAsync(Guid id);
+    }
+}

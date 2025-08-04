@@ -30,6 +30,6 @@ namespace WarehouseManagement.Domain.Entities
         }
 
         public void ChangeResourceState(Status status) => ResourceState = status;
-        public void ChangeResourceName(ResourceName name) => Name = name;
+        public void ChangeResourceName(string name) => Name = ResourceName.Create(name);
     }
 }
