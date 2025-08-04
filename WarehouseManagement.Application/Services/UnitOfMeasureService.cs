@@ -17,14 +17,16 @@ namespace WarehouseManagement.Application.Services
     public class UnitOfMeasureService : IUnitOfMeasureService
     {
         private readonly IUnitOfMeasureRepository _repository;
+        private readonly IReceiptResourceRepository _receiptRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public UnitOfMeasureService(IUnitOfMeasureRepository repository, IUnitOfWork unitOfWork, IMapper mapper)
+        public UnitOfMeasureService(IUnitOfMeasureRepository repository, IUnitOfWork unitOfWork, IMapper mapper, IReceiptResourceRepository receiptRepository)
         {
             _repository = repository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _receiptRepository = receiptRepository;
         }
 
         public async Task<Result<UnitOfMeasureDto>> CreateAsync(string name)
@@ -51,6 +53,9 @@ namespace WarehouseManagement.Application.Services
             var measure = await _repository.GetByIdAsync(id);
             if (measure is null)
                 return Result.Failure("Eдиница измерения не найдена!");
+
+            if(await _receiptRepository.IsUnitOfMeasureUsedAsync(id))
+                return Result.Failure("Единица измерения уже используется в системе!");
 
             await _repository.DeleteAsync(id);
             await _unitOfWork.CommitAsync();

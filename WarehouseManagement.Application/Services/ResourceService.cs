@@ -20,14 +20,16 @@ namespace WarehouseManagement.Application.Services
     public class ResourceService : IResourceService
     {
         private readonly IResourceRepository _repository;
+        private readonly IReceiptResourceRepository _receiptRepository;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public ResourceService(IResourceRepository repository, IMapper mapper, IUnitOfWork unitOfWork)
+        public ResourceService(IResourceRepository repository, IMapper mapper, IUnitOfWork unitOfWork, IReceiptResourceRepository receiptResourceRepository)
         {
             _repository = repository;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _receiptRepository = receiptResourceRepository;
         }
 
         public async Task<Result<ResourceDto>> CreateAsync(string name)
@@ -54,6 +56,9 @@ namespace WarehouseManagement.Application.Services
             var resource = await _repository.GetByIdAsync(resourceId);
             if (resource is null)
                 return Result.Failure("Ресурс не найден!");
+
+            if (await _receiptRepository.IsResourceUsedAsync(resourceId))
+                return Result.Failure("Ресурс уже используется в системе!");
 
             await _repository.DeleteAsync(resourceId);
             await _unitOfWork.CommitAsync();

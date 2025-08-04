@@ -7,5 +7,9 @@ using WarehouseManagement.Domain.Entities;
 
 namespace WarehouseManagement.Domain.Interfaces
 {
-    public interface IReceiptResourceRepository : IRepository<ReceiptResource> { }
+    public interface IReceiptResourceRepository : IRepository<ReceiptResource>
+    {
+        Task<bool> IsResourceUsedAsync(Guid resourceId);
+        Task<bool> IsUnitOfMeasureUsedAsync(Guid unitOfMeasureId);
+    }
 }
