@@ -7,6 +7,9 @@ using WarehouseManagement.Domain.Enums;
 
 namespace WarehouseManagement.Application.DTOs
 {
+    /// <summary>
+    /// DTO для справочника единиц измерения
+    /// </summary>
     public class UnitOfMeasureDto
     {
         public Guid Id { get; set; }

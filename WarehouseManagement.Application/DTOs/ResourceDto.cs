@@ -8,6 +8,9 @@ using WarehouseManagement.Domain.Enums;
 
 namespace WarehouseManagement.Application.DTOs
 {
+    /// <summary>
+    /// DTO для справочника ресурсов
+    /// </summary>
     public class ResourceDto
     {
         public Guid Id { get; set; }
