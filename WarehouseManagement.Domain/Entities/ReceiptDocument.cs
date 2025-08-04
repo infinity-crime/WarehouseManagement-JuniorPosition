@@ -18,7 +18,9 @@ namespace WarehouseManagement.Domain.Entities
         private readonly List<ReceiptResource> _receiptResources = new();
         public IReadOnlyCollection<ReceiptResource> ReceiptResources => _receiptResources;
 
+#pragma warning disable CS8618
         private ReceiptDocument() { }
+#pragma warning restore CS8618
 
         public static ReceiptDocument Create(string number, DateTime date)
         {

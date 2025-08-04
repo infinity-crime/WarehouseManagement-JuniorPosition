@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36221.1 d17.14
+VisualStudioVersion = 17.14.36221.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarehouseManagement.Domain", "WarehouseManagement.Domain\WarehouseManagement.Domain.csproj", "{9240181F-5EF9-40C9-B283-7AF47AC7C6C9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarehouseManagement.Application", "WarehouseManagement.Application\WarehouseManagement.Application.csproj", "{2652FFFB-0E7F-4EB5-A09A-3D11A9168AF6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{9240181F-5EF9-40C9-B283-7AF47AC7C6C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9240181F-5EF9-40C9-B283-7AF47AC7C6C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9240181F-5EF9-40C9-B283-7AF47AC7C6C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2652FFFB-0E7F-4EB5-A09A-3D11A9168AF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2652FFFB-0E7F-4EB5-A09A-3D11A9168AF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2652FFFB-0E7F-4EB5-A09A-3D11A9168AF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2652FFFB-0E7F-4EB5-A09A-3D11A9168AF6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
