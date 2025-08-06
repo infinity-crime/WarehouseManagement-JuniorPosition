@@ -20,13 +20,9 @@ namespace WarehouseManagement.Application.Interfaces
 
         // Методы для документов поступления
         Task<Result<ReceiptDocumentDto>> GetDocumentByIdAsync(Guid documentId);
-        Task<Result<ReceiptDocumentDto>> CreateDocumentAsync(CreateDocumentCommand command);
-        Task<Result<ReceiptDocumentDto>> UpdateDocumentAsync(UpdateDocumentCommand command);
+        Task<Result<Guid>> CreateDocumentAsync(CreateDocumentCommand command);
+        Task<Result> UpdateDocumentAsync(UpdateDocumentCommand command);
         Task<Result> DeleteDocumentAsync(Guid id);
-
-        // Методы для ресурсов поступления
-        Task<Result> AddResourceToDocumentAsync(AddResourceToDocumentCommand command);
-        Task<Result> RemoveResourceFromDocumentAsync(Guid documentId, Guid resourceId);
     }
 
     public class ReceiptRecordFilter

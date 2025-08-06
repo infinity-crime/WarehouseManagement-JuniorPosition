@@ -14,10 +14,6 @@ namespace WarehouseManagement.Application.DTOs
         public Guid DocumentId { get; set; }
         public string DocumentNumber { get; set; } = default!;
         public DateTime DocumentDate { get; set; }
-        public Guid ResourceId { get; set; }
-        public string ResourceName { get; set; } = default!;
-        public Guid UnitId { get; set; }
-        public string UnitName { get; set; } = default!;
-        public decimal Amount { get; set; }
+        public List<ReceiptResourceItemDto> ReceiptResourceItemDtos { get; set; } = new();
     }
 }

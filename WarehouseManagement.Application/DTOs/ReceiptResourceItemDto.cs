@@ -12,6 +12,7 @@ namespace WarehouseManagement.Application.DTOs
     public class ReceiptResourceItemDto
     {
         public Guid Id { get; set; }
+        public Guid ReceiptDocumentId { get; set; }
         public Guid ResourceId { get; set; }
         public string ResourceName { get; set; } = default!;
         public Guid UnitId { get; set; }

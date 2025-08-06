@@ -47,6 +47,7 @@ namespace WarehouseManagement.Application.Services
             }
             catch(UnSupportedResourceNameException ex)
             {
+                await _unitOfWork.RollbackAsync();
                 return Result<ResourceDto>.Failure($"Некорректное имя ресурса: {ex.Message}");
             }
         }
@@ -99,6 +100,7 @@ namespace WarehouseManagement.Application.Services
             }
             catch (UnSupportedResourceNameException ex)
             {
+                await _unitOfWork.RollbackAsync();
                 return Result<ResourceDto>.Failure($"Некорректное имя ресурса: {ex.Message}");
             }
         }

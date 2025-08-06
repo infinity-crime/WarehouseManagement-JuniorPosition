@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using WarehouseManagement.Domain.Entities;
 using WarehouseManagement.Application.DTOs;
+using System.IO.Compression;
 
 namespace WarehouseManagement.Application.Mappings
 {
@@ -15,6 +16,7 @@ namespace WarehouseManagement.Application.Mappings
         public ResourceProfile()
         {
             CreateMap<Resource, ResourceDto>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name.Value))
                 .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.ResourceState));
         }

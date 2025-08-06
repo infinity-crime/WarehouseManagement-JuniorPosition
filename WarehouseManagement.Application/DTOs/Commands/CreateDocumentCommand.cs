@@ -10,5 +10,6 @@ namespace WarehouseManagement.Application.DTOs.Commands
     {
         public string Number { get; set; } = default!;
         public DateTime Date { get; set; }
+        public List<ReceiptResourceItemDto>? Resources { get; set; }
     }
 }

@@ -44,6 +44,7 @@ namespace WarehouseManagement.Application.Services
             }
             catch(UnSupportedUnitOfMeasureNameException ex)
             {
+                await _unitOfWork.RollbackAsync();
                 return Result<UnitOfMeasureDto>.Failure($"Некорректное имя единицы измерения: {ex.Message}");
             }
         }
@@ -80,6 +81,7 @@ namespace WarehouseManagement.Application.Services
             }
             catch (UnSupportedUnitOfMeasureNameException ex)
             {
+                await _unitOfWork.RollbackAsync();
                 return Result<UnitOfMeasureDto>.Failure($"Некорректное имя единицы измерения: {ex.Message}");
             }
         }

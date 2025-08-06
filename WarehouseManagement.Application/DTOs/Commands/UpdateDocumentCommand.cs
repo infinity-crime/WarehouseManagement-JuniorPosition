@@ -8,7 +8,9 @@ namespace WarehouseManagement.Application.DTOs.Commands
 {
     public class UpdateDocumentCommand
     {
-        public string OtherNumber { get; set; } = default!;
-        public DateTime OtherDate { get; set; }
+        public Guid Id { get; set; }
+        public string Number { get; set; } = default!;
+        public DateTime Date { get; set; }
+        public List<ReceiptResourceItemDto>? Resources { get; set; }
     }
 }

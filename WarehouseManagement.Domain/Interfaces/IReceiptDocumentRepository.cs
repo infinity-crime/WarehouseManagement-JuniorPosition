@@ -7,5 +7,9 @@ using WarehouseManagement.Domain.Entities;
 
 namespace WarehouseManagement.Domain.Interfaces
 {
-    public interface IReceiptDocumentRepository : IRepository<ReceiptDocument> { }
+    public interface IReceiptDocumentRepository : IRepository<ReceiptDocument>
+    {
+        Task<IEnumerable<ReceiptDocument>> GetFilteredDocumentsAsync(DateTime? startDate, DateTime? endDate, 
+            List<string> docNumbers, List<Guid> resourceIds, List<Guid> unitIds);
+    }
 }

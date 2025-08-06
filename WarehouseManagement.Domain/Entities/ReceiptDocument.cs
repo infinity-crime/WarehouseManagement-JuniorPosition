@@ -50,6 +50,14 @@ namespace WarehouseManagement.Domain.Entities
                 _receiptResources.Remove(receiptResource);
         }
 
+        public void ClearResources()
+        {
+            if(_receiptResources.Count < 1)
+                return;
+
+            _receiptResources.Clear();
+        }
+
         public void ChangeNumber(string number) => Number = ReceiptNumber.Create(number);
 
         public void ChangeDate(DateTime date) => Date = date;
