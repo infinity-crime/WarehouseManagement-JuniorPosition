@@ -136,7 +136,6 @@ namespace WarehouseManagement.Application.Services
                 return Result.Failure($"Ошибка обновления документа: {ex.Message}");
             }
 
-            await _receiptDocumentRepository.UpdateAsync(document);
             await _unitOfWork.CommitAsync();
 
             return Result.Success();

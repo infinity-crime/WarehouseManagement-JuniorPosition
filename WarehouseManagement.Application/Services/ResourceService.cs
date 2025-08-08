@@ -77,7 +77,6 @@ namespace WarehouseManagement.Application.Services
                 return Result<ResourceDto>.Failure("Ресурс уже в архиве!");
 
             resource.ChangeResourceState(Status.Archive);
-            await _repository.UpdateAsync(resource);
             await _unitOfWork.CommitAsync();
 
             return Result<ResourceDto>.Success(_mapper.Map<ResourceDto>(resource));
@@ -93,7 +92,6 @@ namespace WarehouseManagement.Application.Services
             {
                 resource.ChangeResourceName(name);
 
-                await _repository.UpdateAsync(resource);
                 await _unitOfWork.CommitAsync();
 
                 return Result<ResourceDto>.Success(_mapper.Map<ResourceDto>(resource));

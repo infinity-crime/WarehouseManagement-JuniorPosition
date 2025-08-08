@@ -74,7 +74,6 @@ namespace WarehouseManagement.Application.Services
             {
                 measure.ChangeUnitOfMeasureName(name);
 
-                await _repository.UpdateAsync(measure);
                 await _unitOfWork.CommitAsync();
 
                 return Result<UnitOfMeasureDto>.Success(_mapper.Map<UnitOfMeasureDto>(measure));
@@ -96,7 +95,6 @@ namespace WarehouseManagement.Application.Services
                 return Result<UnitOfMeasureDto>.Failure("Единица измерения уже в архиве!");
 
             measure.ChangeUnitOfMeasureState(Status.Archive);
-            await _repository.UpdateAsync(measure);
             await _unitOfWork.CommitAsync();
 
             return Result<UnitOfMeasureDto>.Success(_mapper.Map<UnitOfMeasureDto>(measure));
