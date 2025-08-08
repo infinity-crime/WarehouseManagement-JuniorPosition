@@ -28,7 +28,7 @@ namespace WarehouseManagement.Application.Interfaces
     public class ReceiptRecordFilter
     {
         public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; };
+        public DateTime? EndDate { get; set; }
         public List<string> DocumentNumbers { get; set; } = new();
         public List<Guid> ResourceIds { get; set; } = new();
         public List<Guid> UnitIds { get; set; } = new();

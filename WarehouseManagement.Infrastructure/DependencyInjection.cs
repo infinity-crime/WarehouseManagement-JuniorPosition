@@ -5,7 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WarehouseManagement.Domain.Interfaces;
 using WarehouseManagement.Infrastructure.Data;
+using WarehouseManagement.Infrastructure.Data.Repositories;
+using WarehouseManagement.Infrastructure.Data.Repositories.Common;
 
 namespace WarehouseManagement.Infrastructure
 {
@@ -20,7 +23,11 @@ namespace WarehouseManagement.Infrastructure
                 options.UseNpgsql(connectionString);
             });
 
-            /* Зарегистрировать репозитории! */
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IResourceRepository, ResourceRepository>();
+            services.AddScoped<IUnitOfMeasureRepository, UnitOfMeasureRepository>();
+            services.AddScoped<IReceiptResourceRepository, ReceiptResourceRepository>();
+            services.AddScoped<IReceiptDocumentRepository, ReceiptDocumentRepository>();
 
             return services;
         }

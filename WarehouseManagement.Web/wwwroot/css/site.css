@@ -1,0 +1,80 @@
+:root {
+    --sidebar-width: 300px;
+    --primary-color: #2c3e50;
+    --active-color: #3498db;
+    --hover-color: #34495e;
+    --text-color: #ecf0f1;
+    --section-color: #1a252f;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f7fa;
+    color: #333;
+}
+
+.sidebar {
+    width: var(--sidebar-width);
+    height: 100vh;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    position: fixed;
+    overflow-y: auto;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+.sidebar-header {
+    padding: 20px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    text-align: center;
+}
+
+.sidebar-section {
+    margin-top: 20px;
+}
+
+.sidebar-section-header {
+    padding: 10px 20px;
+    font-size: 1.4rem;
+    font-weight: 500;
+}
+
+.sidebar-item {
+    display: block;
+    padding: 12px 20px;
+    color: var(--text-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    border-left: 4px solid transparent;
+}
+
+.sidebar-item:hover {
+   background-color: var(--hover-color);
+   border-left-color: var(--active-color);
+}
+
+.sidebar-item.active {
+   background-color: var(--hover-color);
+   border-left-color: var(--active-color);
+   font-weight: bold;
+}
+
+.main-content {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    padding: 20px;
+}
+
+.page-title {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--active-color);
+    padding-bottom: 10px;
+}
