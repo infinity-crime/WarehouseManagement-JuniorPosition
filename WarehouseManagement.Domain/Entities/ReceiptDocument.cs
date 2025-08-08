@@ -18,7 +18,9 @@ namespace WarehouseManagement.Domain.Entities
         private readonly List<ReceiptResource> _receiptResources = new();
         public IReadOnlyCollection<ReceiptResource> ReceiptResources => _receiptResources;
 
+#pragma warning disable CS8618
         private ReceiptDocument() { }
+#pragma warning restore CS8618
 
         public static ReceiptDocument Create(string number, DateTime date)
         {
@@ -46,6 +48,14 @@ namespace WarehouseManagement.Domain.Entities
 
             if(receiptResource != null)
                 _receiptResources.Remove(receiptResource);
+        }
+
+        public void ClearResources()
+        {
+            if(_receiptResources.Count < 1)
+                return;
+
+            _receiptResources.Clear();
         }
 
         public void ChangeNumber(string number) => Number = ReceiptNumber.Create(number);

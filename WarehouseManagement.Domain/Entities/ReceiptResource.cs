@@ -22,7 +22,9 @@ namespace WarehouseManagement.Domain.Entities
 
         public AmountResource Amount { get; private set; }
 
+#pragma warning disable CS8618
         private ReceiptResource() { }
+#pragma warning restore CS8618
 
         public static ReceiptResource Create(Guid resourceId, Guid unitOfMeasureId, Guid receiptDocumentId, decimal amount)
         {

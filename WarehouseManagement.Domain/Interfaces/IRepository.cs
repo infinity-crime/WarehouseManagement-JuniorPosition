@@ -10,7 +10,7 @@ namespace WarehouseManagement.Domain.Interfaces
     {
         Task<T?> GetByIdAsync(Guid id);
         Task<IEnumerable<T>?> GetAllAsync();
-        Task UpdateAsync(T entity);
+        Task AddAsync(T entity);
         Task DeleteAsync(Guid id);
     }
 }

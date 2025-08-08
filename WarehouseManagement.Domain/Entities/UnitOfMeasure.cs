@@ -15,7 +15,9 @@ namespace WarehouseManagement.Domain.Entities
         public UnitOfMeasureName Currency { get; private set; }
         public Status UnitOfMeasureState { get; private set; }
 
+#pragma warning disable CS8618
         private UnitOfMeasure() { }
+#pragma warning restore CS8618
 
         public static UnitOfMeasure Create(string currency)
         {
@@ -28,5 +30,6 @@ namespace WarehouseManagement.Domain.Entities
         }
 
         public void ChangeUnitOfMeasureState(Status status) => UnitOfMeasureState = status;
+        public void ChangeUnitOfMeasureName(string currency) => Currency = UnitOfMeasureName.Create(currency);
     }
 }

@@ -15,7 +15,9 @@ namespace WarehouseManagement.Domain.Entities
         public ResourceName Name { get; private set; }
         public Status ResourceState { get; private set; }
 
+#pragma warning disable CS8618
         private Resource() { }
+#pragma warning restore CS8618
 
         public static Resource Create(string name)
         {
@@ -28,5 +30,6 @@ namespace WarehouseManagement.Domain.Entities
         }
 
         public void ChangeResourceState(Status status) => ResourceState = status;
+        public void ChangeResourceName(string name) => Name = ResourceName.Create(name);
     }
 }

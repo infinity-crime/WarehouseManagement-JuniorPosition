@@ -18,7 +18,7 @@ namespace WarehouseManagement.Domain.ValueObjects
 
         public static UnitOfMeasureName Create(string unitOfMeasureName)
         {
-            if (string.IsNullOrEmpty(unitOfMeasureName) || unitOfMeasureName.Length != 3)
+            if (string.IsNullOrEmpty(unitOfMeasureName) || unitOfMeasureName.Length > 10)
                 throw new UnSupportedUnitOfMeasureNameException(unitOfMeasureName);
 
             return new UnitOfMeasureName(unitOfMeasureName);

@@ -7,5 +7,8 @@ using WarehouseManagement.Domain.Entities;
 
 namespace WarehouseManagement.Domain.Interfaces
 {
-    public interface IUnitOfMeasureRepository : IRepository<UnitOfMeasure> { }
+    public interface IUnitOfMeasureRepository : IRepository<UnitOfMeasure>
+    {
+        Task<bool> ExistsByNameAsync(string name);
+    }
 }
