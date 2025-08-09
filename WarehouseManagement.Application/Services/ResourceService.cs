@@ -102,5 +102,20 @@ namespace WarehouseManagement.Application.Services
                 return Result<ResourceDto>.Failure($"Некорректное имя ресурса: {ex.Message}");
             }
         }
+
+        public Task<Result<ResourceDto>> GetByIdAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Result<ResourceDto>> MoveToArchiveAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Result<ResourceDto>> MoveToWorkAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

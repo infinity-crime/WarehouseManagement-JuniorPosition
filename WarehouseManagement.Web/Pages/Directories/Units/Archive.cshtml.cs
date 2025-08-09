@@ -2,14 +2,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using WarehouseManagement.Application.DTOs;
 using WarehouseManagement.Application.Interfaces;
+using WarehouseManagement.Application.Services;
+using WarehouseManagement.Domain.Interfaces;
 
 namespace WarehouseManagement.Web.Pages.Directories.Units
 {
-    public class MainModel : PageModel
+    public class ArchiveModel : PageModel
     {
         private readonly IUnitOfMeasureService _unitOfMeasureService;
 
-        public MainModel(IUnitOfMeasureService unitOfMeasureService)
+        public ArchiveModel(IUnitOfMeasureService unitOfMeasureService)
         {
             _unitOfMeasureService = unitOfMeasureService;
         }
@@ -18,8 +20,8 @@ namespace WarehouseManagement.Web.Pages.Directories.Units
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var units = await _unitOfMeasureService.GetAllActiveUnitsAsync();
-            Units = units.Value!.ToList();
+            var result = await _unitOfMeasureService.GetAllArchiveUnitsAsync();
+            Units = result.Value!.ToList();
 
             return Page();
         }

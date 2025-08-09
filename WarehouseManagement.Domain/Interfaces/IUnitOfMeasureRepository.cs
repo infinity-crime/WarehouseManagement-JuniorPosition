@@ -9,6 +9,8 @@ namespace WarehouseManagement.Domain.Interfaces
 {
     public interface IUnitOfMeasureRepository : IRepository<UnitOfMeasure>
     {
+        Task<IEnumerable<UnitOfMeasure>> GetAllActiveUnitsAsync();
+        Task<IEnumerable<UnitOfMeasure>> GetAllArchiveUnitsAsync();
         Task<bool> ExistsByNameAsync(string name);
     }
 }
