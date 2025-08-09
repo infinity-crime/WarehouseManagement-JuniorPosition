@@ -16,7 +16,7 @@ namespace WarehouseManagement.Domain.ValueObjects
 
         public static ResourceName Create(string resourceName)
         {
-            if (string.IsNullOrEmpty(resourceName))
+            if (string.IsNullOrEmpty(resourceName) || resourceName.Length > 255)
                 throw new UnSupportedResourceNameException(resourceName);
 
             return new ResourceName(resourceName);

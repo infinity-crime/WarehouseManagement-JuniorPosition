@@ -67,7 +67,7 @@ namespace WarehouseManagement.Application.Services
             return Result.Success();
         }
 
-        public async Task<Result<ResourceDto>> MoveToArchive(Guid resourceId)
+        public async Task<Result<ResourceDto>> MoveToArchiveAsync(Guid resourceId)
         {
             var resource = await _repository.GetByIdAsync(resourceId);
             if(resource is null)
@@ -101,6 +101,39 @@ namespace WarehouseManagement.Application.Services
                 await _unitOfWork.RollbackAsync();
                 return Result<ResourceDto>.Failure($"Некорректное имя ресурса: {ex.Message}");
             }
+        }
+
+        public async Task<Result<ResourceDto>> GetByIdAsync(Guid id)
+        {
+            var resource = await _repository.GetByIdAsync(id);
+            return Result<ResourceDto>.Success(_mapper.Map<ResourceDto>(resource));
+        }
+
+        public async Task<Result<ResourceDto>> MoveToWorkAsync(Guid id)
+        {
+            var resource = await _repository.GetByIdAsync(id);
+            if (resource is null)
+                return Result<ResourceDto>.Failure("Невозможно перенести в работу несуществующую запись!");
+
+            if (resource.ResourceState == Status.InWork)
+                return Result<ResourceDto>.Failure("Ресурс уже в работе!");
+
+            resource.ChangeResourceState(Status.InWork);
+            await _unitOfWork.CommitAsync();
+
+            return Result<ResourceDto>.Success(_mapper.Map<ResourceDto>(resource));
+        }
+
+        public async Task<Result<IEnumerable<ResourceDto>>> GetAllActiveResourcesAsync()
+        {
+            var resources = await _repository.GetAllActiveResourcesAsync();
+            return Result <IEnumerable<ResourceDto>>.Success(_mapper.Map<IEnumerable<ResourceDto>>(resources));
+        }
+
+        public async Task<Result<IEnumerable<ResourceDto>>> GetAllArchiveResourcesAsync()
+        {
+            var resources = await _repository.GetAllArchiveResourcesAsync();
+            return Result<IEnumerable<ResourceDto>>.Success(_mapper.Map<IEnumerable<ResourceDto>>(resources));
         }
     }
 }

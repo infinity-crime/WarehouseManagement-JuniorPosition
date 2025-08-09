@@ -1,0 +1,25 @@
+﻿@page
+@model WarehouseManagement.Web.Pages.Directories.Resources.ArchiveModel
+@{
+    ViewData["Title"] = "Ресурсы - архив";
+}
+
+<div class="page-title">
+    <a asp-page="Main" class="add-btn">К рабочим</a>
+</div>
+
+<table class="units-table" border="1">
+    <thead>
+        <tr>
+            <th>Наименование</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var resource in Model.Resources)
+        {
+            <tr onclick="window.location.href='@Url.Page("/Directories/Resources/Form", new { id = resource.Id })'">
+                <td>@resource.Name</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,27 @@
+﻿@page
+@using System
+@model WarehouseManagement.Web.Pages.Directories.Units.MainModel
+@{
+    ViewData["Title"] = "Единицы измерения";
+}
+
+<div class="page-title">
+    <a asp-page="Form" asp-route-id="@Guid.Empty" class="add-btn">Добавить</a>
+    <a asp-page="Archive" class="add-btn">К архиву</a>
+</div>
+
+<table class="units-table" border="1">
+    <thead>
+        <tr>
+            <th>Наименование</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var unit in Model.Units)
+        {
+            <tr onclick="window.location.href='@Url.Page("/Directories/Units/Form", new { id = unit.Id })'">
+                <td>@unit.Currency</td>
+            </tr>
+        }
+    </tbody>
+</table>

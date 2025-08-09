@@ -85,7 +85,7 @@ namespace WarehouseManagement.Application.Services
             }
         }
 
-        public async Task<Result<UnitOfMeasureDto>> MoveToArchive(Guid id)
+        public async Task<Result<UnitOfMeasureDto>> MoveToArchiveAsync(Guid id)
         {
             var measure = await _repository.GetByIdAsync(id);
             if (measure is null)
@@ -98,6 +98,48 @@ namespace WarehouseManagement.Application.Services
             await _unitOfWork.CommitAsync();
 
             return Result<UnitOfMeasureDto>.Success(_mapper.Map<UnitOfMeasureDto>(measure));
+        }
+
+        public async Task<Result<IEnumerable<UnitOfMeasureDto>>> GetAllUnitsAsync()
+        {
+            var units = await _repository.GetAllAsync();
+            return Result<IEnumerable<UnitOfMeasureDto>>.Success(_mapper.Map<IEnumerable<UnitOfMeasureDto>>(units));
+        }
+
+        public async Task<Result<UnitOfMeasureDto>> GetByIdAsync(Guid id)
+        {
+            var unit = await _repository.GetByIdAsync(id);
+            if (unit is null)
+                return Result<UnitOfMeasureDto>.Failure("Единица измерения не найдена");
+
+            return Result<UnitOfMeasureDto>.Success(_mapper.Map<UnitOfMeasureDto>(unit));
+        }
+
+        public async Task<Result<UnitOfMeasureDto>> MoveToWorkAsync(Guid id)
+        {
+            var unit = await _repository.GetByIdAsync(id);
+            if (unit is null)
+                return Result<UnitOfMeasureDto>.Failure("Невозможно перенести в работу несуществующую запись!");
+
+            if (unit.UnitOfMeasureState == Status.InWork)
+                return Result<UnitOfMeasureDto>.Failure("Единица измерения уже в работе!");
+
+            unit.ChangeUnitOfMeasureState(Status.InWork);
+            await _unitOfWork.CommitAsync();
+
+            return Result<UnitOfMeasureDto>.Success(_mapper.Map<UnitOfMeasureDto>(unit));
+        }
+
+        public async Task<Result<IEnumerable<UnitOfMeasureDto>>> GetAllActiveUnitsAsync()
+        {
+            var units = await _repository.GetAllActiveUnitsAsync();
+            return Result<IEnumerable<UnitOfMeasureDto>>.Success(_mapper.Map<IEnumerable<UnitOfMeasureDto>>(units));
+        }
+
+        public async Task<Result<IEnumerable<UnitOfMeasureDto>>> GetAllArchiveUnitsAsync()
+        {
+            var units = await _repository.GetAllArchiveUnitsAsync();
+            return Result<IEnumerable<UnitOfMeasureDto>>.Success(_mapper.Map<IEnumerable<UnitOfMeasureDto>>(units));
         }
     }
 }

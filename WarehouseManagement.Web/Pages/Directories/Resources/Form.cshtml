@@ -1,0 +1,44 @@
+﻿@page "{id}"
+@model WarehouseManagement.Web.Pages.Directories.Resources.FormModel
+@{
+    ViewData["Title"] = Model.IsNewResource ? "Добавить ресурс" : "Редактировать ресурс";
+}
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">
+        @Model.ErrorMessage
+    </div>
+}
+
+<form method="post">
+    <div class="form-container">
+        <div class="form-group">
+            <label asp-for="Name">Наименование </label>
+            <input asp-for="Name" class="form-control" required
+                   placeholder="Введите название ресурса" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="button-group">
+            <button type="submit" asp-page-handler="Save" class="btn btn-primary">
+                @(Model.IsNewResource ? "Добавить" : "Сохранить")
+            </button>
+
+            @if (!Model.IsNewResource)
+            {
+                <button type="submit" asp-page-handler="Delete" class="btn btn-danger">Удалить</button>
+                @if (Model.CurrentResource?.State == Domain.Enums.Status.Archive)
+                {
+                    <button type="submit" asp-page-handler="ToWork" class="btn btn-secondary">К работе</button>
+                }
+                else
+                {
+                    <button type="submit" asp-page-handler="Archive" class="btn btn-secondary">В архив</button>
+                }
+            }
+
+            <a asp-page="Main" class="btn btn-outline-secondary">Отмена</a>
+        </div>
+    </div>
+</form>
