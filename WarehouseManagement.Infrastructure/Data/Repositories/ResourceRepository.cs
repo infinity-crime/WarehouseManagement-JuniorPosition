@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WarehouseManagement.Domain.Enums;
 using WarehouseManagement.Domain.Interfaces;
 using WarehouseManagement.Infrastructure.Data.Repositories.Common;
 
@@ -14,7 +15,22 @@ namespace WarehouseManagement.Infrastructure.Data.Repositories
 
         public async Task<bool> ExistsByNameAsync(string name)
         {
-            return await _context.Resources.AnyAsync(r => r.Name.Value == name);
+            var resources = await _context.Resources.ToListAsync();
+            return resources.Any(r => r.Name.Value == name);
+        }
+
+        public async Task<IEnumerable<Resource>> GetAllActiveResourcesAsync()
+        {
+            return await _context.Resources
+                .Where(r => r.ResourceState == Status.InWork)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Resource>> GetAllArchiveResourcesAsync()
+        {
+            return await _context.Resources
+                .Where(r => r.ResourceState == Status.Archive)
+                .ToListAsync();
         }
     }
 }

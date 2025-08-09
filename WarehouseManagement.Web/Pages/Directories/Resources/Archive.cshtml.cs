@@ -5,11 +5,11 @@ using WarehouseManagement.Application.Interfaces;
 
 namespace WarehouseManagement.Web.Pages.Directories.Resources
 {
-    public class MainModel : PageModel
+    public class ArchiveModel : PageModel
     {
         private readonly IResourceService _resourceService;
 
-        public MainModel(IResourceService resourceService)
+        public ArchiveModel(IResourceService resourceService)
         {
             _resourceService = resourceService;
         }
@@ -18,7 +18,7 @@ namespace WarehouseManagement.Web.Pages.Directories.Resources
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var result = await _resourceService.GetAllActiveResourcesAsync();
+            var result = await _resourceService.GetAllArchiveResourcesAsync();
             Resources = result.Value!.ToList();
 
             return Page();

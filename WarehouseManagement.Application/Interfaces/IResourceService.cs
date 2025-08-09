@@ -11,5 +11,9 @@ using WarehouseManagement.Domain.Entities;
 
 namespace WarehouseManagement.Application.Interfaces
 {
-    public interface IResourceService : IDirectoryService<Result<ResourceDto>> { }
+    public interface IResourceService : IDirectoryService<Result<ResourceDto>>
+    {
+        Task<Result<IEnumerable<ResourceDto>>> GetAllActiveResourcesAsync();
+        Task<Result<IEnumerable<ResourceDto>>> GetAllArchiveResourcesAsync();
+    }
 }

@@ -1,12 +1,11 @@
 ﻿@page
-@model WarehouseManagement.Web.Pages.Directories.Resources.MainModel
+@model WarehouseManagement.Web.Pages.Directories.Resources.ArchiveModel
 @{
-    ViewData["Title"] = "Ресурсы";
+    ViewData["Title"] = "Ресурсы - архив";
 }
 
 <div class="page-title">
-    <a asp-page="Form" asp-route-id="@Guid.Empty" class="add-btn">Добавить</a>
-    <a asp-page="Archive" class="add-btn">К архиву</a>
+    <a asp-page="Main" class="add-btn">К рабочим</a>
 </div>
 
 <table class="units-table" border="1">

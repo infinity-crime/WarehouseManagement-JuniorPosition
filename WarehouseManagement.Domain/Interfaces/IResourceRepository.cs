@@ -10,5 +10,7 @@ namespace WarehouseManagement.Domain.Interfaces
     public interface IResourceRepository : IRepository<Resource>
     {
         Task<bool> ExistsByNameAsync(string name);
+        Task<IEnumerable<Resource>> GetAllActiveResourcesAsync();
+        Task<IEnumerable<Resource>> GetAllArchiveResourcesAsync();
     }
 }
