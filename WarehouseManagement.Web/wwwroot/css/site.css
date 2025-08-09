@@ -84,6 +84,7 @@ body {
 
 .page-title {
     font-size: 1.8rem;
+    flex-wrap: nowrap;
     margin: 0 0 25px 0;
     color: var(--primary-color);
     padding-bottom: 15px;
@@ -113,6 +114,7 @@ body {
 
 .units-table {
     width: 100%;
+    min-width: 600px;
     font-size: 20px;
     border-collapse: collapse;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -167,6 +169,14 @@ body {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+}
+
+
+.button-group-header {
+    display: flex;
+    gap: 15px;
+    flex-shrink: 0; 
+    margin-left: 20px; 
 }
 
 .btn {
