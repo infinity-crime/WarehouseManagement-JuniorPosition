@@ -1,12 +1,8 @@
-﻿using AutoMapper;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-using WarehouseManagement.Domain.Entities;
-using WarehouseManagement.Application.DTOs;
 using System.IO.Compression;
 
 namespace WarehouseManagement.Application.Mappings

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WarehouseManagement.Domain.Common;
-using WarehouseManagement.Domain.Interfaces;
 
 namespace WarehouseManagement.Infrastructure.Data.Repositories.Common
 {
