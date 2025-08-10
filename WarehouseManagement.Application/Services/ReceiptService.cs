@@ -1,18 +1,9 @@
-﻿using AutoMapper;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
-using WarehouseManagement.Application.Common;
-using WarehouseManagement.Application.DTOs;
-using WarehouseManagement.Application.DTOs.Commands;
-using WarehouseManagement.Application.Interfaces;
-using WarehouseManagement.Domain.Entities;
-using WarehouseManagement.Domain.Exceptions;
-using WarehouseManagement.Domain.Exceptions.UnSupportedExceptions;
-using WarehouseManagement.Domain.Interfaces;
 
 namespace WarehouseManagement.Application.Services
 {

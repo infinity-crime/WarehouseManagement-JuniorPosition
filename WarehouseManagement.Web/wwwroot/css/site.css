@@ -159,18 +159,17 @@ body {
     transition: border-color 0.3s;
 }
 
-    .form-control:focus {
-        border-color: #3498db;
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-    }
+.form-control:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
 
 .button-group {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
 }
-
 
 .button-group-header {
     display: flex;
@@ -194,27 +193,27 @@ body {
     color: white;
 }
 
-    .btn-primary:hover {
-        background-color: #2980b9;
-    }
+.btn-primary:hover {
+    background-color: #2980b9;
+}
 
 .btn-danger {
     background-color: #e74c3c;
     color: white;
 }
 
-    .btn-danger:hover {
-        background-color: #c0392b;
-    }
+.btn-danger:hover {
+    background-color: #c0392b;
+}
 
 .btn-secondary {
     background-color: #95a5a6;
     color: white;
 }
 
-    .btn-secondary:hover {
-        background-color: #7f8c8d;
-    }
+.btn-secondary:hover {
+    background-color: #7f8c8d;
+}
 
 .btn-outline-secondary {
     background-color: transparent;
@@ -222,9 +221,9 @@ body {
     color: #7f8c8d;
 }
 
-    .btn-outline-secondary:hover {
-        background-color: #f8f9fa;
-    }
+.btn-outline-secondary:hover {
+    background-color: #f8f9fa;
+}
 
 .text-danger {
     color: #e74c3c;

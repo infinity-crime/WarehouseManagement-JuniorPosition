@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WarehouseManagement.Domain.Enums;
-using WarehouseManagement.Domain.Interfaces;
-using WarehouseManagement.Infrastructure.Data.Repositories.Common;
 
 namespace WarehouseManagement.Infrastructure.Data.Repositories
 {

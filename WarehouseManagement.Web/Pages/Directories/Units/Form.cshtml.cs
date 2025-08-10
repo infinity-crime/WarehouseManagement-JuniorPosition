@@ -20,7 +20,7 @@ namespace WarehouseManagement.Web.Pages.Directories.Units
         public Guid Id { get; set; }
 
         [BindProperty]
-        public string Name { get; set; } = string.Empty;
+        public string Input { get; set; } = string.Empty;
 
         public UnitOfMeasureDto? CurrentUnit { get; set; }
 
@@ -35,7 +35,7 @@ namespace WarehouseManagement.Web.Pages.Directories.Units
             var result = await _unitOfMeasureService.GetByIdAsync(id);
             if(result.IsSucces && result.Value != null)
             {
-                Name = result.Value.Currency;
+                Input = result.Value.Currency;
                 CurrentUnit = result.Value;
                 return Page();
             }
@@ -84,7 +84,7 @@ namespace WarehouseManagement.Web.Pages.Directories.Units
 
         private async Task<IActionResult> CreateNewUnit()
         {
-            var result = await _unitOfMeasureService.CreateAsync(Name);
+            var result = await _unitOfMeasureService.CreateAsync(Input);
             if (result.IsSucces)
                 return RedirectToPage("Main");
 
@@ -94,7 +94,7 @@ namespace WarehouseManagement.Web.Pages.Directories.Units
 
         private async Task<IActionResult> UpdateExistingUnit()
         {
-            var resultUpdate = await _unitOfMeasureService.ChangeNameAsync(Id, Name);
+            var resultUpdate = await _unitOfMeasureService.ChangeNameAsync(Id, Input);
             if (resultUpdate.IsSucces)
                 return RedirectToPage("Main");
 

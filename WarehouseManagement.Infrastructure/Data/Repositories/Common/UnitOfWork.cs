@@ -1,11 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using WarehouseManagement.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace WarehouseManagement.Infrastructure.Data.Repositories.Common
 {

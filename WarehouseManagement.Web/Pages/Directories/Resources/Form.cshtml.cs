@@ -19,7 +19,7 @@ namespace WarehouseManagement.Web.Pages.Directories.Resources
         public Guid Id { get; set; }
 
         [BindProperty]
-        public string Name { get; set; } = string.Empty;
+        public string Input { get; set; } = string.Empty;
 
         public ResourceDto? CurrentResource { get; set; }
 
@@ -34,7 +34,7 @@ namespace WarehouseManagement.Web.Pages.Directories.Resources
             var result = await _resourceService.GetByIdAsync(Id);
             if(result.IsSucces && result.Value != null)
             {
-                Name = result.Value!.Name;
+                Input = result.Value!.Name;
                 CurrentResource = result.Value;
                 return Page();
             }
@@ -83,7 +83,7 @@ namespace WarehouseManagement.Web.Pages.Directories.Resources
 
         private async Task<IActionResult> CreateNewResource()
         {
-            var result = await _resourceService.CreateAsync(Name);
+            var result = await _resourceService.CreateAsync(Input);
             if (result.IsSucces)
                 return RedirectToPage("Main");
 
@@ -93,7 +93,7 @@ namespace WarehouseManagement.Web.Pages.Directories.Resources
 
         private async Task<IActionResult> UpdateExistingResource()
         {
-            var resultUpdate = await _resourceService.ChangeNameAsync(Id, Name);
+            var resultUpdate = await _resourceService.ChangeNameAsync(Id, Input);
             if(resultUpdate.IsSucces)
                 return RedirectToPage("Main");
 
