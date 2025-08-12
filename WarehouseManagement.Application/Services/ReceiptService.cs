@@ -10,16 +10,17 @@ namespace WarehouseManagement.Application.Services
     public class ReceiptService : IReceiptService
     {
         private readonly IReceiptDocumentRepository _receiptDocumentRepository;
-        private readonly IReceiptResourceRepository _receiptResourceRepository;
         private readonly IResourceRepository _resourceRepository;
         private readonly IUnitOfMeasureRepository _unitOfMeasureRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public ReceiptService(IReceiptDocumentRepository receiptDocumentRepository, IReceiptResourceRepository receiptResourceRepository, IUnitOfWork unitOfWork, IMapper mapper)
+        public ReceiptService(IReceiptDocumentRepository receiptDocumentRepository, IResourceRepository resourceRepository, IUnitOfMeasureRepository unitOfMeasureRepository,
+            IUnitOfWork unitOfWork, IMapper mapper)
         {
             _receiptDocumentRepository = receiptDocumentRepository;
-            _receiptResourceRepository = receiptResourceRepository;
+            _resourceRepository = resourceRepository;
+            _unitOfMeasureRepository = unitOfMeasureRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
@@ -78,9 +79,17 @@ namespace WarehouseManagement.Application.Services
 
         public async Task<Result<IEnumerable<ReceiptRecordDto>>> GetReceiptRecordsAsync(ReceiptRecordFilter filter)
         {
+            var startDate = filter.StartDate.HasValue
+                ? filter.StartDate.Value.ToUniversalTime()
+                : (DateTime?)null;
+
+            var endDate = filter.EndDate.HasValue
+                ? filter.EndDate.Value.ToUniversalTime()
+                : (DateTime?)null;
+
             var documents = await _receiptDocumentRepository.GetFilteredDocumentsAsync(
-                filter.StartDate,
-                filter.EndDate,
+                startDate,
+                endDate,
                 filter.DocumentNumbers,
                 filter.ResourceIds,
                 filter.UnitIds);

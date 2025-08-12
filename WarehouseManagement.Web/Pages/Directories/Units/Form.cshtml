@@ -28,7 +28,7 @@
             @if (!Model.IsNewUnit)
             {
                 <button type="submit" asp-page-handler="Delete" class="btn btn-danger">Удалить</button>
-                @if(Model.CurrentUnit!.State == Domain.Enums.Status.Archive)
+                @if(Model.CurrentUnit?.State == Domain.Enums.Status.Archive)
                 {
                     <button type="submit" asp-page-handler="ToWork" class="btn btn-secondary">К работе</button>
                 }

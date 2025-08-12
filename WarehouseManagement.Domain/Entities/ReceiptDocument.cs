@@ -13,7 +13,14 @@ namespace WarehouseManagement.Domain.Entities
     public class ReceiptDocument : BaseEntity<Guid>
     {
         public ReceiptNumber Number { get; private set; }
-        public DateTime Date { get; private set; }
+        private DateTime _date;
+        public DateTime Date
+        {
+            get => _date;
+            private set => _date = value.Kind == DateTimeKind.Unspecified
+                ? DateTime.SpecifyKind(value, DateTimeKind.Utc)
+                : value.ToUniversalTime();
+        }
 
         private readonly List<ReceiptResource> _receiptResources = new();
         public IReadOnlyCollection<ReceiptResource> ReceiptResources => _receiptResources;

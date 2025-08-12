@@ -28,10 +28,13 @@ namespace WarehouseManagement.Infrastructure.Data.Repositories
                 query = query.Where(d => d.Date >= startDate.Value.Date);
 
             if (endDate.HasValue)
-                query = query.Where(d => d.Date <= endDate.Value.Date.AddDays(1).AddTicks(-1));
+                query = query.Where(d => d.Date <= endDate.Value.Date);
 
             if (docNumbers != null && docNumbers.Any())
-                query = query.Where(d => docNumbers.Contains(d.Number.Value));
+            {
+                var linq = await query.ToListAsync();
+                return linq.AsEnumerable().Where(d => docNumbers.Contains(d.Number.Value));
+            }
 
             if (resourceIds != null && resourceIds.Any())
                 query = query.Where(d => d.ReceiptResources.Any(rr => resourceIds.Contains(rr.ResourceId)));
