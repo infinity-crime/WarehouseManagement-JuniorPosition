@@ -9,6 +9,7 @@ namespace WarehouseManagement.Domain.Interfaces
 {
     public interface IReceiptDocumentRepository : IRepository<ReceiptDocument>
     {
+        Task<ReceiptDocument?> GetDocumentByIdWithIncludeAsync(Guid id);
         Task<IEnumerable<ReceiptDocument>> GetFilteredDocumentsAsync(DateTime? startDate, DateTime? endDate, 
             List<string> docNumbers, List<Guid> resourceIds, List<Guid> unitIds);
     }

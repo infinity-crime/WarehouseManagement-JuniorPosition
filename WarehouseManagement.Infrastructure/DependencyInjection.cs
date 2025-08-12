@@ -20,7 +20,9 @@ namespace WarehouseManagement.Infrastructure
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseNpgsql(connectionString);
+                options.UseNpgsql(connectionString)
+                .EnableSensitiveDataLogging()
+                .LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information);
             });
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();

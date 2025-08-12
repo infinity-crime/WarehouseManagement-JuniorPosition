@@ -58,7 +58,7 @@
     <tbody>
         @foreach (var record in Model.ReceiptRecords)
         {
-            <tr data-url='@Url.Page("Form", new { id = record.DocumentId })'>
+            <tr onclick="window.location.href='@Url.Page("/Warehouse/Form", new { id = record.DocumentId })'">
                 <td>@record.DocumentNumber</td>
                 <td>@record.DocumentDate.ToString("dd.MM.yyyy")</td>
                 <td>

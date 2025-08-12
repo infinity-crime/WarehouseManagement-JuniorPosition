@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
@@ -40,7 +43,7 @@ namespace WarehouseManagement.Application.Services
                         if (res == null || unit == null)
                             return Result<Guid>.Failure("Ресурс или единица измерения не найдены!");
 
-                        document.AddResource(res, unit, resource.Amount);
+                        document.AddResource(res.Id, unit.Id, resource.Amount);
                     }
                 }
 
@@ -70,7 +73,7 @@ namespace WarehouseManagement.Application.Services
 
         public async Task<Result<ReceiptDocumentDto>> GetDocumentByIdAsync(Guid documentId)
         {
-            var document = await _receiptDocumentRepository.GetByIdAsync(documentId);
+            var document = await _receiptDocumentRepository.GetDocumentByIdWithIncludeAsync(documentId);
             if (document is null)
                 return Result<ReceiptDocumentDto>.Failure("Такого документа не найдено!");
 
@@ -99,7 +102,7 @@ namespace WarehouseManagement.Application.Services
 
         public async Task<Result> UpdateDocumentAsync(UpdateDocumentCommand command)
         {
-            var document = await _receiptDocumentRepository.GetByIdAsync(command.Id);
+            var document = await _receiptDocumentRepository.GetDocumentByIdWithIncludeAsync(command.Id);
             if (document == null)
                 return Result.Failure("Документ поступления не найден");
 
@@ -109,19 +112,15 @@ namespace WarehouseManagement.Application.Services
             {
                 document.ChangeNumber(command.Number);
 
-                document.ClearResources();
+                var existingResources = document.ReceiptResources.ToList();
+                foreach (var resource in existingResources)
+                    document.DeleteResource(resource.Id);
 
                 if (command.Resources != null)
                 {
                     foreach (var resource in command.Resources)
                     {
-                        var res = await _resourceRepository.GetByIdAsync(resource.ResourceId);
-                        var unit = await _unitOfMeasureRepository.GetByIdAsync(resource.UnitId);
-
-                        if (res == null || unit == null)
-                            return Result<Guid>.Failure("Ресурс или единица измерения не найдены!");
-
-                        document.AddResource(res, unit, resource.Amount);
+                        document.AddResource(resource.ResourceId, resource.UnitId, resource.Amount);
                     }
                 }
             }
@@ -137,7 +136,6 @@ namespace WarehouseManagement.Application.Services
             }
 
             await _unitOfWork.CommitAsync();
-
             return Result.Success();
         }
     }

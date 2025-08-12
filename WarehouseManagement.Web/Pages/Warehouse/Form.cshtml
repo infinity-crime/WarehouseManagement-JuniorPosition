@@ -58,8 +58,11 @@
                                 <button type="button" class="btn-remove-resource" data-index="@i">×</button>
                             </td>
                             <td>
-                                <select asp-for="Command.Resources[i].ResourceId" 
-                                        asp-items="Model.ResourceOptions" 
+                                <input type="hidden" name="Command.Resources.Index" value="@i" class="resource-index-hidden" />
+                                <input asp-for="Command.Resources[i].Id" type="hidden" />
+
+                                <select asp-for="Command.Resources[i].ResourceId"
+                                        asp-items="Model.ResourceOptions"
                                         class="form-control resource-select">
                                     <option value="">Выберите ресурс</option>
                                 </select>
@@ -82,7 +85,6 @@
                     }
                 }
                 
-                <!-- Пустая строка по умолчанию -->
                 @if (Model.Command.Resources == null || !Model.Command.Resources.Any())
                 {
                     <tr id="empty-row">
@@ -103,63 +105,4 @@
     <form id="delete-form" method="post" asp-page-handler="Delete">
         <input type="hidden" asp-for="Command.Id" />
     </form>
-}
-
-@section Scripts {
-    <script>
-        // 1. Сохраняем данные с сервера в переменные JS при загрузке страницы
-        const resourceOptions = @Json.Serialize(Model.ResourceOptions);
-        const unitOptions = @Json.Serialize(Model.UnitOptions);
-
-        document.addEventListener('DOMContentLoaded', function() {
-            // Функция генерации опций для select (она у вас уже есть и она правильная)
-            function getOptionsHtml(options, selectedValue) {
-                let html = '<option value="">Выберите...</option>'; // Добавим пустую опцию
-                html += options.map(opt =>
-                    `<option value="${opt.value}" ${opt.value === selectedValue ? 'selected' : ''}>${opt.text}</option>`
-                ).join('');
-                return html;
-            }
-
-            // 2. Используем переменные в обработчике клика
-            document.getElementById('add-resource').addEventListener('click', function() {
-                const tableBody = document.getElementById('resources-body');
-                const newIndex = tableBody.querySelectorAll('tr:not(#empty-row)').length;
-
-                const emptyRow = document.getElementById('empty-row');
-                if (emptyRow) emptyRow.remove();
-
-                const newRow = document.createElement('tr');
-                // 3. Строим HTML с помощью JS-переменных
-                newRow.innerHTML = `
-                    <td>
-                        <button type="button" class="btn-remove-resource" data-index="${newIndex}">×</button>
-                    </td>
-                    <td>
-                        <select name="Command.Resources[${newIndex}].ResourceId" class="form-control resource-select" required>
-                            ${getOptionsHtml(resourceOptions, '')}
-                        </select>
-                    </td>
-                    <td>
-                        <select name="Command.Resources[${newIndex}].UnitId" class="form-control unit-select" required>
-                            ${getOptionsHtml(unitOptions, '')}
-                        </select>
-                    </td>
-                    <td>
-                        <input name="Command.Resources[${newIndex}].Amount"
-                               type="number" step="0.01" class="form-control amount-input" required />
-                    </td>
-                `;
-
-                tableBody.appendChild(newRow);
-                initRemoveButtons(); // Эта функция у вас уже есть
-            });
-
-            // ... остальной ваш код (initRemoveButtons) ...
-            function initRemoveButtons() {
-                // Ваш код для удаления строк и переиндексации
-            }
-            initRemoveButtons();
-        });
-    </script>
 }

@@ -10,6 +10,16 @@ namespace WarehouseManagement.Infrastructure.Data.Repositories
     {
         public ReceiptDocumentRepository(ApplicationDbContext context) : base(context) { }
 
+        public async Task<ReceiptDocument?> GetDocumentByIdWithIncludeAsync(Guid id)
+        {
+            return await _context.ReceiptDocuments
+                .Include(rd => rd.ReceiptResources)
+                    .ThenInclude(rr => rr.Resource)
+                .Include(rd => rd.ReceiptResources)
+                    .ThenInclude(rr => rr.UnitOfMeasure)
+                .FirstOrDefaultAsync(rd => rd.Id == id);
+        }
+
         public async Task<IEnumerable<ReceiptDocument>> GetFilteredDocumentsAsync(
             DateTime? startDate, 
             DateTime? endDate, 

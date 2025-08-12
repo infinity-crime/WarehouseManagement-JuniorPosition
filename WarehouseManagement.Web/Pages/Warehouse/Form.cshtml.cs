@@ -24,7 +24,10 @@ namespace WarehouseManagement.Web.Pages.Warehouse
         public Guid Id { get; set; }
 
         [BindProperty]
-        public UpdateDocumentCommand Command { get; set; } = new();
+        public UpdateDocumentCommand Command { get; set; } = new()
+        {
+            Resources = new List<ReceiptResourceItemDto>()
+        };
 
         public bool IsNewReceipt => Id == Guid.Empty;
         public List<SelectListItem> ResourceOptions { get; set; } = new();
@@ -46,6 +49,7 @@ namespace WarehouseManagement.Web.Pages.Warehouse
                         Date = result.Value!.Date,
                         Resources = result.Value!.Resources.Select(r => new ReceiptResourceItemDto
                         {
+                            Id = r.Id,
                             ResourceId = r.ResourceId,
                             UnitId = r.UnitId,
                             Amount = r.Amount
@@ -71,6 +75,16 @@ namespace WarehouseManagement.Web.Pages.Warehouse
 
             ModelState.AddModelError(string.Empty, result.Error!);
             await LoadOptions();
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostDeleteAsync()
+        {
+            var result = await _receiptService.DeleteDocumentAsync(Id);
+            if (result.IsSucces)
+                return RedirectToPage("Receipts");
+
+            ModelState.AddModelError(string.Empty, result.Error!);
             return Page();
         }
 

@@ -39,12 +39,12 @@ namespace WarehouseManagement.Domain.Entities
             };
         }
 
-        public void AddResource(Resource resource, UnitOfMeasure unit, decimal amount)
+        public void AddResource(Guid resourceId, Guid unitOfMeasureId, decimal amount)
         {
-            if (_receiptResources.Any(r => r.ResourceId == resource.Id))
+            if (_receiptResources.Any(r => r.ResourceId == resourceId))
                 throw new DomainInvalidOperationException($"Такой ресурс поступления уже добавлен!");
 
-            var receiptResource = ReceiptResource.Create(resource.Id, unit.Id, this.Id, amount);
+            var receiptResource = ReceiptResource.Create(resourceId, unitOfMeasureId, this.Id, amount);
 
             _receiptResources.Add(receiptResource);
         }

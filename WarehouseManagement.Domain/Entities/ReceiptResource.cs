@@ -34,7 +34,7 @@ namespace WarehouseManagement.Domain.Entities
                 ResourceId = resourceId,
                 UnitOfMeasureId = unitOfMeasureId,
                 ReceiptDocumentId = receiptDocumentId,
-                Amount = AmountResource.Create(amount)
+                Amount = AmountResource.Create(amount),
             };
         }
     }
