@@ -18,6 +18,7 @@ using (var scope = app.Services.CreateScope()) // создание БД, если она не наход
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     try
     {
+        db.Database.EnsureCreated();
         Console.WriteLine("-Применение миграции БД...");
         db.Database.Migrate();
         Console.WriteLine("-Миграции БД применены успешно.");
