@@ -34,8 +34,21 @@ namespace WarehouseManagement.Domain.Entities
                 ResourceId = resourceId,
                 UnitOfMeasureId = unitOfMeasureId,
                 ReceiptDocumentId = receiptDocumentId,
-                Amount = AmountResource.Create(amount)
+                Amount = AmountResource.Create(amount),
             };
+        }
+
+        /// <summary>
+        /// Обновляет ресурс поступления. Может возникнуть исключение при некорректном кол-ве ресурса
+        /// </summary>
+        /// <param name="resourceId"></param>
+        /// <param name="unitOfMeasureId"></param>
+        /// <param name="amount"></param>
+        public void Update(Guid resourceId, Guid unitOfMeasureId, decimal amount)
+        {
+            ResourceId = resourceId;
+            UnitOfMeasureId = unitOfMeasureId;
+            Amount = AmountResource.Create(amount);
         }
     }
 }

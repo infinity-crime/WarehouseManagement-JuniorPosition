@@ -13,10 +13,16 @@ namespace WarehouseManagement.Domain.Entities
     public class ReceiptDocument : BaseEntity<Guid>
     {
         public ReceiptNumber Number { get; private set; }
-        public DateTime Date { get; private set; }
+        private DateTime _date;
+        public DateTime Date
+        {
+            get => _date;
+            private set => _date = value.Kind == DateTimeKind.Unspecified
+                ? DateTime.SpecifyKind(value, DateTimeKind.Utc)
+                : value.ToUniversalTime();
+        }
 
-        private readonly List<ReceiptResource> _receiptResources = new();
-        public IReadOnlyCollection<ReceiptResource> ReceiptResources => _receiptResources;
+        public ICollection<ReceiptResource> ReceiptResources { get; set; } = new List<ReceiptResource>();
 
 #pragma warning disable CS8618
         private ReceiptDocument() { }
@@ -32,30 +38,28 @@ namespace WarehouseManagement.Domain.Entities
             };
         }
 
-        public void AddResource(Resource resource, UnitOfMeasure unit, decimal amount)
+        public void AddResource(ReceiptResource receiptResource)
         {
-            if (_receiptResources.Any(r => r.ResourceId == resource.Id))
+            if (ReceiptResources.Any(r => r.ResourceId == receiptResource.ResourceId))
                 throw new DomainInvalidOperationException($"Такой ресурс поступления уже добавлен!");
 
-            var receiptResource = ReceiptResource.Create(resource.Id, unit.Id, this.Id, amount);
-
-            _receiptResources.Add(receiptResource);
+            ReceiptResources.Add(receiptResource);
         }
 
         public void DeleteResource(Guid receiptResourceId)
         {
-            var receiptResource = _receiptResources.FirstOrDefault(r => r.Id == receiptResourceId);
+            var receiptResource = ReceiptResources.FirstOrDefault(r => r.Id == receiptResourceId);
 
             if(receiptResource != null)
-                _receiptResources.Remove(receiptResource);
+                ReceiptResources.Remove(receiptResource);
         }
 
         public void ClearResources()
         {
-            if(_receiptResources.Count < 1)
+            if(ReceiptResources.Count < 1)
                 return;
 
-            _receiptResources.Clear();
+            ReceiptResources.Clear();
         }
 
         public void ChangeNumber(string number) => Number = ReceiptNumber.Create(number);

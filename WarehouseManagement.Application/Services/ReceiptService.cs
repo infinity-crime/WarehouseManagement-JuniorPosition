@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
@@ -16,12 +18,15 @@ namespace WarehouseManagement.Application.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public ReceiptService(IReceiptDocumentRepository receiptDocumentRepository, IReceiptResourceRepository receiptResourceRepository, IUnitOfWork unitOfWork, IMapper mapper)
+        public ReceiptService(IReceiptDocumentRepository receiptDocumentRepository, IResourceRepository resourceRepository, IUnitOfMeasureRepository unitOfMeasureRepository,
+            IUnitOfWork unitOfWork, IMapper mapper, IReceiptResourceRepository receiptResourceRepository)
         {
             _receiptDocumentRepository = receiptDocumentRepository;
-            _receiptResourceRepository = receiptResourceRepository;
+            _resourceRepository = resourceRepository;
+            _unitOfMeasureRepository = unitOfMeasureRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _receiptResourceRepository = receiptResourceRepository;
         }
 
         public async Task<Result<Guid>> CreateDocumentAsync(CreateDocumentCommand command)
@@ -39,7 +44,8 @@ namespace WarehouseManagement.Application.Services
                         if (res == null || unit == null)
                             return Result<Guid>.Failure("Ресурс или единица измерения не найдены!");
 
-                        document.AddResource(res, unit, resource.Amount);
+                        var receiptResource = ReceiptResource.Create(res.Id, unit.Id, document.Id, resource.Amount);
+                        document.AddResource(receiptResource);
                     }
                 }
 
@@ -69,7 +75,7 @@ namespace WarehouseManagement.Application.Services
 
         public async Task<Result<ReceiptDocumentDto>> GetDocumentByIdAsync(Guid documentId)
         {
-            var document = await _receiptDocumentRepository.GetByIdAsync(documentId);
+            var document = await _receiptDocumentRepository.GetDocumentByIdWithIncludeAsync(documentId);
             if (document is null)
                 return Result<ReceiptDocumentDto>.Failure("Такого документа не найдено!");
 
@@ -78,9 +84,17 @@ namespace WarehouseManagement.Application.Services
 
         public async Task<Result<IEnumerable<ReceiptRecordDto>>> GetReceiptRecordsAsync(ReceiptRecordFilter filter)
         {
+            var startDate = filter.StartDate.HasValue
+                ? filter.StartDate.Value.ToUniversalTime()
+                : (DateTime?)null;
+
+            var endDate = filter.EndDate.HasValue
+                ? filter.EndDate.Value.ToUniversalTime()
+                : (DateTime?)null;
+
             var documents = await _receiptDocumentRepository.GetFilteredDocumentsAsync(
-                filter.StartDate,
-                filter.EndDate,
+                startDate,
+                endDate,
                 filter.DocumentNumbers,
                 filter.ResourceIds,
                 filter.UnitIds);
@@ -90,7 +104,7 @@ namespace WarehouseManagement.Application.Services
 
         public async Task<Result> UpdateDocumentAsync(UpdateDocumentCommand command)
         {
-            var document = await _receiptDocumentRepository.GetByIdAsync(command.Id);
+            var document = await _receiptDocumentRepository.GetDocumentByIdWithIncludeAsync(command.Id);
             if (document == null)
                 return Result.Failure("Документ поступления не найден");
 
@@ -100,35 +114,69 @@ namespace WarehouseManagement.Application.Services
             {
                 document.ChangeNumber(command.Number);
 
-                document.ClearResources();
+                var existingResources = document.ReceiptResources.ToList();
 
-                if (command.Resources != null)
+                var incoming = command.Resources ?? new List<ReceiptResourceItemDto>();
+
+                var newItemsToAdd = new List<ReceiptResourceItemDto>();
+                foreach (var ir in incoming)
                 {
-                    foreach (var resource in command.Resources)
+                    if (ir.Id != Guid.Empty)
                     {
-                        var res = await _resourceRepository.GetByIdAsync(resource.ResourceId);
-                        var unit = await _unitOfMeasureRepository.GetByIdAsync(resource.UnitId);
-
-                        if (res == null || unit == null)
-                            return Result<Guid>.Failure("Ресурс или единица измерения не найдены!");
-
-                        document.AddResource(res, unit, resource.Amount);
+                        var exist = existingResources.FirstOrDefault(er => er.Id == ir.Id);
+                        if (exist != null)
+                        {
+                            exist.Update(ir.ResourceId, ir.UnitId, ir.Amount);
+                        }
+                        else
+                        {
+                            newItemsToAdd.Add(ir);
+                        }
+                    }
+                    else
+                    {
+                        newItemsToAdd.Add(ir);
                     }
                 }
+
+                var toDelete = existingResources
+                    .Where(er => !incoming.Any(ir => ir.Id != Guid.Empty && ir.Id == er.Id))
+                    .ToList();
+
+                foreach (var del in toDelete)
+                    document.DeleteResource(del.Id);
+
+                foreach (var ir in newItemsToAdd)
+                {
+                    var res = await _resourceRepository.GetByIdAsync(ir.ResourceId);
+                    var unit = await _unitOfMeasureRepository.GetByIdAsync(ir.UnitId);
+                    if (res == null || unit == null)
+                        return Result.Failure("Ресурс или единица измерения не найдены!");
+
+                    var receiptResource = ReceiptResource.Create(res.Id, unit.Id, document.Id, ir.Amount);
+
+                    document.AddResource(receiptResource);
+                    await _receiptResourceRepository.AddAsync(receiptResource);
+                }
+                
             }
-            catch(UnSupportedReceiptNumberException ex)
+            catch (UnSupportedReceiptNumberException ex)
             {
                 await _unitOfWork.RollbackAsync();
                 return Result.Failure($"Ошибка обновления документа: {ex.Message}");
             }
-            catch(DomainInvalidOperationException ex)
+            catch (UnSupportedAmountResourceException ex)
+            {
+                await _unitOfWork.RollbackAsync();
+                return Result.Failure($"Ошибка обновления документа: некорректное кол-во ресурса поступления - {ex.Message}");
+            }
+            catch (DomainInvalidOperationException ex)
             {
                 await _unitOfWork.RollbackAsync();
                 return Result.Failure($"Ошибка обновления документа: {ex.Message}");
             }
 
             await _unitOfWork.CommitAsync();
-
             return Result.Success();
         }
     }

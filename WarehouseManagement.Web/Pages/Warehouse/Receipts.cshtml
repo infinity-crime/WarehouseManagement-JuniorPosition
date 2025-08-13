@@ -1,4 +1,88 @@
 ﻿@page
 @model WarehouseManagement.Web.Pages.Warehouse.ReceiptsModel
 @{
+    ViewData["Title"] = "Поступления";
 }
+
+<div class="page-title">
+    <span>*При множественном выборе зажмите CTRL и выбирайте фильтры левой кнопкой мыши</span>
+</div>
+
+<a asp-page="/Warehouse/Form" asp-route-id="@Guid.Empty" class="add-btn">Сформировать поступление</a>
+
+<form method="get" class="filter-form">
+    <div class="filter-row">
+        <div class="filter-group">
+            <label>Период</label>
+            <div class="date-range">
+                <input asp-for="Filter.StartDate" type="date" class="form-control" />
+                <input asp-for="Filter.EndDate" type="date" class="form-control" />
+            </div>
+        </div>
+
+        <div class="filter-group">
+            <label>Номер поступления</label>
+            <select asp-for="Filter.DocumentNumbers" asp-items="Model.DocumentNumberOptions" class="form-control" multiple>
+                <option value="">Выберите</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="filter-row">
+        <div class="filter-group">
+            <label>Ресурс</label>
+            <select asp-for="Filter.ResourceIds" asp-items="Model.ResourceOptions" class="form-control" multiple>
+                <option value="">Выберите</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Единица измерения</label>
+            <select asp-for="Filter.UnitIds" asp-items="Model.UnitOptions" class="form-control" multiple>
+                <option value="">Выберите</option>
+            </select>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-apply">Применить фильтры</button>
+</form>
+
+<table class="receipts-table">
+    <thead>
+        <tr>
+            <th>Номер</th>
+            <th>Дата</th>
+            <th>Ресурсы</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var record in Model.ReceiptRecords)
+        {
+            <tr onclick="window.location.href='@Url.Page("/Warehouse/Form", new { id = record.DocumentId })'">
+                <td>@record.DocumentNumber</td>
+                <td>@record.DocumentDate.ToString("dd.MM.yyyy")</td>
+                <td>
+                    <table class="nested-table">
+                        <thead>
+                            <tr>
+                                <th>Ресурс</th>
+                                <th>Единица измерения</th>
+                                <th>Количество</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var resource in record.ReceiptResourceItemDtos)
+                            {
+                                <tr>
+                                    <td>@resource.ResourceName</td>
+                                    <td>@resource.UnitName</td>
+                                    <td>@resource.Amount</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

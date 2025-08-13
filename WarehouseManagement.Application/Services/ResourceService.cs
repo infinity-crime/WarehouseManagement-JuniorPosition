@@ -125,5 +125,11 @@ namespace WarehouseManagement.Application.Services
             var resources = await _repository.GetAllArchiveResourcesAsync();
             return Result<IEnumerable<ResourceDto>>.Success(_mapper.Map<IEnumerable<ResourceDto>>(resources));
         }
+
+        public async Task<Result<IEnumerable<ResourceDto>>> GetAllResourcesAsync()
+        {
+            var resources = await _repository.GetAllAsync();
+            return Result<IEnumerable<ResourceDto>>.Success(_mapper.Map<IEnumerable<ResourceDto>>(resources));
+        }
     }
 }
