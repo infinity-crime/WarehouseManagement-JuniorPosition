@@ -61,6 +61,13 @@ namespace WarehouseManagement.Web.Pages.Warehouse
 
         public async Task<IActionResult> OnPostSaveAsync()
         {
+            if (Command.Resources != null && Command.Resources.Any(r => r.ResourceId == Guid.Empty || r.UnitId == Guid.Empty))
+            {
+                ModelState.AddModelError(string.Empty, "Пожалуйста, выберите ресурс и единицу измерения во всех строках.");
+                await LoadOptions();
+                return Page();
+            }
+
             var result = IsNewReceipt ?
                 await _receiptService.CreateDocumentAsync(new CreateDocumentCommand
                 {
@@ -75,6 +82,45 @@ namespace WarehouseManagement.Web.Pages.Warehouse
 
             ModelState.AddModelError(string.Empty, result.Error!);
             await LoadOptions();
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostAddResourceAsync()
+        {
+            if (Command.Resources == null)
+                Command.Resources = new List<ReceiptResourceItemDto>();
+
+            Command.Resources.Add(new ReceiptResourceItemDto { Id = Guid.Empty, Amount = 0m });
+
+            await LoadOptions();
+
+            ModelState.Clear();
+
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostRemoveResourceAsync(int? removeIndex, Guid? removeId)
+        {
+            if (Command.Resources == null)
+                Command.Resources = new List<ReceiptResourceItemDto>();
+
+            if (removeIndex.HasValue)
+            {
+                var idx = removeIndex.Value;
+                if (idx >= 0 && idx < Command.Resources.Count)
+                    Command.Resources.RemoveAt(idx);
+            }
+            else if (removeId.HasValue)
+            {
+                var toRemove = Command.Resources.FirstOrDefault(r => r.Id == removeId.Value);
+                if (toRemove != null)
+                    Command.Resources.Remove(toRemove);
+            }
+
+            await LoadOptions();
+
+            ModelState.Clear();
+
             return Page();
         }
 

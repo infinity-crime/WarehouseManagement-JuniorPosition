@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -113,23 +112,53 @@ namespace WarehouseManagement.Application.Services
                 document.ChangeNumber(command.Number);
 
                 var existingResources = document.ReceiptResources.ToList();
-                foreach (var resource in existingResources)
-                    document.DeleteResource(resource.Id);
 
-                if (command.Resources != null)
+                var incoming = command.Resources ?? new List<ReceiptResourceItemDto>();
+
+                var newItemsToAdd = new List<ReceiptResourceItemDto>();
+                foreach (var ir in incoming)
                 {
-                    foreach (var resource in command.Resources)
+                    if (ir.Id != Guid.Empty)
                     {
-                        document.AddResource(resource.ResourceId, resource.UnitId, resource.Amount);
+                        var exist = existingResources.FirstOrDefault(er => er.Id == ir.Id);
+                        if (exist != null)
+                        {
+                            exist.Update(ir.ResourceId, ir.UnitId, ir.Amount);
+                        }
+                        else
+                        {
+                            newItemsToAdd.Add(ir);
+                        }
+                    }
+                    else
+                    {
+                        newItemsToAdd.Add(ir);
                     }
                 }
+
+                var toDelete = existingResources
+                    .Where(er => !incoming.Any(ir => ir.Id != Guid.Empty && ir.Id == er.Id))
+                    .ToList();
+
+                foreach (var del in toDelete)
+                    document.DeleteResource(del.Id);
+
+                foreach (var ir in newItemsToAdd)
+                {
+                    var res = await _resourceRepository.GetByIdAsync(ir.ResourceId);
+                    var unit = await _unitOfMeasureRepository.GetByIdAsync(ir.UnitId);
+                    if (res == null || unit == null)
+                        return Result.Failure("Ресурс или единица измерения не найдены!");
+
+                    document.AddResource(res.Id, unit.Id, ir.Amount);
+                }
             }
-            catch(UnSupportedReceiptNumberException ex)
+            catch (UnSupportedReceiptNumberException ex)
             {
                 await _unitOfWork.RollbackAsync();
                 return Result.Failure($"Ошибка обновления документа: {ex.Message}");
             }
-            catch(DomainInvalidOperationException ex)
+            catch (DomainInvalidOperationException ex)
             {
                 await _unitOfWork.RollbackAsync();
                 return Result.Failure($"Ошибка обновления документа: {ex.Message}");
