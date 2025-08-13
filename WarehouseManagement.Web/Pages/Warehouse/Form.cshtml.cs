@@ -55,7 +55,8 @@ namespace WarehouseManagement.Web.Pages.Warehouse
                             ResourceId = r.ResourceId,
                             UnitId = r.UnitId,
                             Amount = r.Amount
-                        }).ToList()
+                        })
+                        .ToList()
                     };
                 }
             }
@@ -76,7 +77,9 @@ namespace WarehouseManagement.Web.Pages.Warehouse
                 return RedirectToPage("Receipts");
 
             ErrorMessage = result.Error;
+
             await LoadOptions();
+
             return Page();
         }
 
@@ -94,7 +97,7 @@ namespace WarehouseManagement.Web.Pages.Warehouse
             return Page();
         }
 
-        public async Task<IActionResult> OnPostRemoveResourceAsync(int? removeIndex, Guid? removeId)
+        public async Task<IActionResult> OnPostRemoveResourceAsync(int? removeIndex, Guid? removeId) // либо по индексу, либо по id
         {
             if (Command.Resources == null)
                 Command.Resources = new List<ReceiptResourceItemDto>();
@@ -125,7 +128,7 @@ namespace WarehouseManagement.Web.Pages.Warehouse
             if (result.IsSucces)
                 return RedirectToPage("Receipts");
 
-            ModelState.AddModelError(string.Empty, result.Error!);
+            ErrorMessage = result.Error;
             return Page();
         }
 

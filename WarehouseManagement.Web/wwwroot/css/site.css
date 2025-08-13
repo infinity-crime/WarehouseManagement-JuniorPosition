@@ -259,12 +259,12 @@ filter-form {
     flex: 1;
 }
 
-    .filter-group label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: 600;
-        color: #555;
-    }
+.filter-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+}
 
 .date-range {
     display: flex;
@@ -304,27 +304,27 @@ select.form-control {
     overflow: hidden;
 }
 
-    .receipts-table th {
-        background-color: #714cfe;
-        color: white;
-        padding: 15px;
-        text-align: left;
-        font-weight: 600;
-    }
+.receipts-table th {
+    background-color: #714cfe;
+    color: white;
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+}
 
-    .receipts-table td {
-        padding: 14px 15px;
-        border-bottom: 1px solid #eee;
-    }
+.receipts-table td {
+    padding: 14px 15px;
+    border-bottom: 1px solid #eee;
+}
 
-    .receipts-table tr:last-child td {
-        border-bottom: none;
-    }
+.receipts-table tr:last-child td {
+    border-bottom: none;
+}
 
-    .receipts-table tr:hover {
-        background-color: #f5f7ff;
-        cursor: pointer;
-    }
+.receipts-table tr:hover {
+    background-color: #f5f7ff;
+    cursor: pointer;
+}
 
 .document-header {
     display: flex;
@@ -336,9 +336,9 @@ select.form-control {
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-    .document-header .form-group {
-        flex: 1;
-    }
+.document-header .form-group {
+    flex: 1;
+}
 
 .resources-section {
     background: white;
@@ -347,11 +347,11 @@ select.form-control {
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-    .resources-section h3 {
-        margin-top: 0;
-        margin-bottom: 20px;
-        color: #714cfe;
-    }
+.resources-section h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #714cfe;
+}
 
 .resources-table {
     width: 100%;
@@ -359,22 +359,22 @@ select.form-control {
     margin-bottom: 20px;
 }
 
-    .resources-table th {
-        background-color: #f8f9fa;
-        padding: 12px 15px;
-        text-align: left;
-        font-weight: 600;
-        border-bottom: 2px solid #714cfe;
-    }
+.resources-table th {
+    background-color: #f8f9fa;
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid #714cfe;
+}
 
-    .resources-table td {
-        padding: 12px 15px;
-        border-bottom: 1px solid #eee;
-    }
+.resources-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+}
 
-    .resources-table tr:last-child td {
-        border-bottom: none;
-    }
+.resources-table tr:last-child td {
+    border-bottom: none;
+}
 
 .btn-remove-resource {
     background: none;
