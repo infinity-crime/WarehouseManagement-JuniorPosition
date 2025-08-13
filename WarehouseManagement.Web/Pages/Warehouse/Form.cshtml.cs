@@ -33,6 +33,8 @@ namespace WarehouseManagement.Web.Pages.Warehouse
         public List<SelectListItem> ResourceOptions { get; set; } = new();
         public List<SelectListItem> UnitOptions { get; set; } = new();
 
+        public string? ErrorMessage { get; set; }
+
         public async Task OnGetAsync()
         {
             await LoadOptions();
@@ -61,13 +63,6 @@ namespace WarehouseManagement.Web.Pages.Warehouse
 
         public async Task<IActionResult> OnPostSaveAsync()
         {
-            if (Command.Resources != null && Command.Resources.Any(r => r.ResourceId == Guid.Empty || r.UnitId == Guid.Empty))
-            {
-                ModelState.AddModelError(string.Empty, "Пожалуйста, выберите ресурс и единицу измерения во всех строках.");
-                await LoadOptions();
-                return Page();
-            }
-
             var result = IsNewReceipt ?
                 await _receiptService.CreateDocumentAsync(new CreateDocumentCommand
                 {
@@ -80,7 +75,7 @@ namespace WarehouseManagement.Web.Pages.Warehouse
             if (result.IsSucces)
                 return RedirectToPage("Receipts");
 
-            ModelState.AddModelError(string.Empty, result.Error!);
+            ErrorMessage = result.Error;
             await LoadOptions();
             return Page();
         }

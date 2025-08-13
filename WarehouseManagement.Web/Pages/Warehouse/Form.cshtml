@@ -4,6 +4,13 @@
     ViewData["Title"] = Model.IsNewReceipt ? "Новое поступление" : "Поступление";
 }
 
+@if (Model.ErrorMessage != null)
+{
+    <div class="alert alert-danger">
+        @Model.ErrorMessage
+    </div>
+}
+
 <div class="page-title">
     
     <div class="button-group">

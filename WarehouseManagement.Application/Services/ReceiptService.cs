@@ -155,7 +155,7 @@ namespace WarehouseManagement.Application.Services
 
                     var receiptResource = ReceiptResource.Create(res.Id, unit.Id, document.Id, ir.Amount);
 
-                    document.ReceiptResources.Add(receiptResource);
+                    document.AddResource(receiptResource);
                     await _receiptResourceRepository.AddAsync(receiptResource);
                 }
                 
@@ -164,6 +164,11 @@ namespace WarehouseManagement.Application.Services
             {
                 await _unitOfWork.RollbackAsync();
                 return Result.Failure($"Ошибка обновления документа: {ex.Message}");
+            }
+            catch (UnSupportedAmountResourceException ex)
+            {
+                await _unitOfWork.RollbackAsync();
+                return Result.Failure($"Ошибка обновления документа: некорректное кол-во ресурса поступления - {ex.Message}");
             }
             catch (DomainInvalidOperationException ex)
             {
