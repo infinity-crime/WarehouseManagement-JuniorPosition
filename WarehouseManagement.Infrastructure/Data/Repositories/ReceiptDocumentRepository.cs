@@ -14,9 +14,6 @@ namespace WarehouseManagement.Infrastructure.Data.Repositories
         {
             return await _context.ReceiptDocuments
                 .Include(rd => rd.ReceiptResources)
-                    .ThenInclude(rr => rr.Resource)
-                .Include(rd => rd.ReceiptResources)
-                    .ThenInclude(rr => rr.UnitOfMeasure)
                 .FirstOrDefaultAsync(rd => rd.Id == id);
         }
 

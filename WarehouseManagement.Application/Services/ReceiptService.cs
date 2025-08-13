@@ -12,19 +12,21 @@ namespace WarehouseManagement.Application.Services
     public class ReceiptService : IReceiptService
     {
         private readonly IReceiptDocumentRepository _receiptDocumentRepository;
+        private readonly IReceiptResourceRepository _receiptResourceRepository;
         private readonly IResourceRepository _resourceRepository;
         private readonly IUnitOfMeasureRepository _unitOfMeasureRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
         public ReceiptService(IReceiptDocumentRepository receiptDocumentRepository, IResourceRepository resourceRepository, IUnitOfMeasureRepository unitOfMeasureRepository,
-            IUnitOfWork unitOfWork, IMapper mapper)
+            IUnitOfWork unitOfWork, IMapper mapper, IReceiptResourceRepository receiptResourceRepository)
         {
             _receiptDocumentRepository = receiptDocumentRepository;
             _resourceRepository = resourceRepository;
             _unitOfMeasureRepository = unitOfMeasureRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _receiptResourceRepository = receiptResourceRepository;
         }
 
         public async Task<Result<Guid>> CreateDocumentAsync(CreateDocumentCommand command)
@@ -42,7 +44,8 @@ namespace WarehouseManagement.Application.Services
                         if (res == null || unit == null)
                             return Result<Guid>.Failure("Ресурс или единица измерения не найдены!");
 
-                        document.AddResource(res.Id, unit.Id, resource.Amount);
+                        var receiptResource = ReceiptResource.Create(res.Id, unit.Id, document.Id, resource.Amount);
+                        document.AddResource(receiptResource);
                     }
                 }
 
@@ -150,8 +153,12 @@ namespace WarehouseManagement.Application.Services
                     if (res == null || unit == null)
                         return Result.Failure("Ресурс или единица измерения не найдены!");
 
-                    document.AddResource(res.Id, unit.Id, ir.Amount);
+                    var receiptResource = ReceiptResource.Create(res.Id, unit.Id, document.Id, ir.Amount);
+
+                    document.ReceiptResources.Add(receiptResource);
+                    await _receiptResourceRepository.AddAsync(receiptResource);
                 }
+                
             }
             catch (UnSupportedReceiptNumberException ex)
             {

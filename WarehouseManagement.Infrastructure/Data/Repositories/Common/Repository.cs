@@ -36,5 +36,10 @@ namespace WarehouseManagement.Infrastructure.Data.Repositories.Common
         {
             return await _context.Set<T>().FindAsync(id);
         }
+
+        public void Update(T entity)
+        {
+            _context.Set<T>().Update(entity);
+        }
     }
 }
